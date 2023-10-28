@@ -2,19 +2,21 @@ import { Card, CardContent } from "./ui/card";
 
 const Levels = () => {
   const levels = ["Beginner", "Intermediate", "Advanced"];
-  console.log(levels);
 
   return (
     <>
-      {levels.forEach((element) => {
-        <Card className="m-2">
-          <CardContent className="font-bold p-2 m-2 w-55">
-            {element}
-          </CardContent>
-        </Card>;
-      })}
+      {levels.map((item) =>{
+      {
+        return (<CardContent className="m-2">
+          <Card className="font-bold p-2 m-2 w-55">
+            {item}
+          </Card>
+        </CardContent>)
+      }
+      })
+    }
     </>
   );
-};
+}
 
-export default Levels;
+export default Levels ;

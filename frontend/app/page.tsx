@@ -1,5 +1,5 @@
 "use client";
-import Levels from "@/components/levels";
+import Levels  from "@/components/levels";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
@@ -17,29 +17,8 @@ export default function Home() {
           </Button>
         ) : null}
         {show ? null : (
-          <Card className="m-2">
-            <CardContent className="font-bold p-2 m-2 w-55">
-              Beginner
-            </CardContent>
-          </Card>
-        )}
-        {show ? null : (
-          <Card className="m-2">
-            <CardContent className="font-bold p-2 m-2 w-55">
-              Intermediate
-            </CardContent>
-          </Card>
-        )}
-        {show ? null : (
-          <Card className="m-2">
-            <CardContent className="font-bold p-2 m-2 w-55">
-              Advanced
-            </CardContent>
-          </Card>
-        )}
-
-        <Levels />
-      </div>
+          <Levels/>
+        )}      </div>
     </main>
   );
 }
