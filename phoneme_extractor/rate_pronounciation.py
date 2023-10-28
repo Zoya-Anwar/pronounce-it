@@ -8,7 +8,7 @@ import string
 from ipapy import UNICODE_TO_IPA
 
 input_file = "output.wav"
-target_sentence = "fromage"
+target_sentence = "avons"
 target_tokens = word_tokenize(target_sentence.lower())
 
 
@@ -79,10 +79,13 @@ def score_phoneme_similarity(p1, p2):
     if p1.is_consonant == p2.is_consonant:
         score = score + 1
         for j in range(1, len(p1.descriptors)):
-            desc1 = p1.descriptors[j]
-            desc2 = p2.descriptors[j]
-            if desc1 == desc2:
-                score = score + 1
+            if j < len(p1.descriptors) and j < len(p2.descriptors):
+                desc1 = p1.descriptors[j]
+                desc2 = p2.descriptors[j]
+                if desc1 == desc2:
+                    score = score + 1
+            else:
+                break
 
     return score
 
@@ -130,5 +133,6 @@ def phoneme_similarity():
     return scores
 
 
-phoneme_similarity()
+if __name__ == "__main__":
+    phoneme_similarity()
 # which_recognized_words()
