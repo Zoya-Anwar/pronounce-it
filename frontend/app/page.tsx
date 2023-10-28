@@ -9,9 +9,9 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
       <h1 className="text-2xl font-bold pb-10">apprenons le français</h1>
       {show ? <Button className="font-bold m-2 w-24" onClick={() => setShow(!show)}> Start </Button> : null}
-      {show ? null : <Card><CardContent className="font-bold p-2 m-2 w-50">Beginner</CardContent></Card>}
-      {show ? null : <Card><CardContent className="font-bold p-2 m-2 w-50">Intermediate</CardContent></Card>}
-      {show ? null : <Card><CardContent className="font-bold p-2 m-2 w-50">Advanced</CardContent></Card>}
+      {show ? null : <Card className="m-2"><CardContent className="font-bold p-2 m-2 w-50">Beginner</CardContent></Card>}
+      {show ? null : <Card className="m-2"><CardContent className="font-bold p-2 m-2 w-50">Intermediate</CardContent></Card>}
+      {show ? null : <Card className="m-2"><CardContent className="font-bold p-2 m-2 w-50">Advanced</CardContent></Card>}
     </main>
   );
 }
