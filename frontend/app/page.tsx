@@ -1,10 +1,11 @@
 "use client";
 import Levels  from "@/components/levels";
 import { Button } from "@/components/ui/button";
+import MicButton from "@/components/mic_button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 
-export default function Home() {
+export default function Root() {
   const [show, setShow] = useState(true);
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
@@ -18,7 +19,8 @@ export default function Home() {
         ) : null}
         {show ? null : (
           <Levels/>
-        )}      </div>
+        )}
+        </div>
     </main>
   );
 }

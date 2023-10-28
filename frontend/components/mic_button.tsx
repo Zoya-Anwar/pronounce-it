@@ -1,9 +1,10 @@
 import { PauseCircle, PlayCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState, useRef } from "react";
+// import mutation post
 
 
-const MicButton = () => {
+const MicButton = (props: any) => {
     const [usingMic, setMic] = useState(false);
     let mediaRecorder = useRef<MediaRecorder | null>(null);
     const [audioChunks, setAudioChunks] = useState<any>([]);
@@ -35,10 +36,18 @@ const MicButton = () => {
         mediaRecorder.current!.stream.getAudioTracks()[0].enabled = false;
         mediaRecorder.current!.stop();
         mediaRecorder.current!.onstop = () => {
-            const audioBlob = new Blob(audioChunks, {type: 'audio/webm'});
+            const audioBlob = new Blob(audioChunks, {type: 'audio/wav'});
             const audioUrl = URL.createObjectURL(audioBlob);
             setAudio(audioUrl);
             setAudioChunks([]);
+            var reader = new FileReader();
+            reader.readAsDataURL(audioBlob); 
+            reader.onloadend = function() {
+                var base64data = reader.result;
+                console.log(base64data);
+                props.returningString("WILL BE MUTATED!");
+                // MUTATE HERE
+            }
         };
     }
 
@@ -48,7 +57,7 @@ const MicButton = () => {
         { usingMic ? (<PauseCircle/>) : (<PlayCircle/>)}
     </Button>
     {audio ? (
-        <audio controls src={audio}>
+        <audio src={audio}>
         </audio>
     ) : null}
     </>
