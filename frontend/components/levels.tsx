@@ -5,18 +5,19 @@ const Levels = () => {
 
   return (
     <>
-      {levels.map((item) =>{
-      {
-        return (<CardContent className="m-2">
-          <Card className="font-bold p-2 m-2 w-55">
-            {item}
-          </Card>
-        </CardContent>)
-      }
-      })
-    }
+      {levels.map((item) => {
+        {
+          return (
+            <Card className="m-2">
+              <CardContent className="font-bold p-2 m-2 w-55">
+                {item}
+              </CardContent>
+            </Card>
+          );
+        }
+      })}
     </>
   );
-}
+};
 
-export default Levels ;
+export default Levels;
