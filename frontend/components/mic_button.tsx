@@ -1,11 +1,10 @@
 import { PauseCircle, PlayCircle } from "lucide-react";
 import { Button } from "./ui/button";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 
 
 const MicButton = () => {
     const [usingMic, setMic] = useState(false);
-    const [stream, setStream] = useState<MediaStream | null>(null);
     let mediaRecorder = useRef<MediaRecorder | null>(null);
     const [audioChunks, setAudioChunks] = useState<any>([]);
     const [audio, setAudio] = useState<string>("");
@@ -49,7 +48,7 @@ const MicButton = () => {
         { usingMic ? (<PauseCircle/>) : (<PlayCircle/>)}
     </Button>
     {audio ? (
-        <audio src={audio}>
+        <audio controls src={audio}>
         </audio>
     ) : null}
     </>
