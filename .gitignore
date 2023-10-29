@@ -1,4 +1,2 @@
-.lexical/
 __pycache__/
-frontend/
 .gitignore
