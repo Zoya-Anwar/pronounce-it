@@ -13,12 +13,17 @@ import {
   useGetSentenceQuery,
   ResponseDataSentence,
 } from "@/hooks/query/use-get-sentence";
+import { useGetAudioQuery, AudioErrorResponseData } from "@/hooks/query/use-audio-query";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Home() {
   const [returnString, setReturnString] = useState<string | null>(null);
   const [testWord, setTestWord] = useState("");
   const [firstWord, setFirstWord] = useState(true);
   const [displayWords, setDisplayWords] = useState(true); // Initial display state
+  const [feedback, setFeedBack] = useState("");
+
+  const { toast } = useToast();
 
   const wordQuery = useGetWordQuery({
     onSuccess(data: ResponseData) {
@@ -37,6 +42,22 @@ export default function Home() {
       setTestWord(data.word);
     },
   });
+
+
+  const audioErrorQuery = useGetAudioQuery({
+    onSuccess(data: AudioErrorResponseData) {
+      console.log(data);
+      toast({
+        title: "Uh Oh",
+        description: data.result
+
+      });
+
+      setFeedBack(data.result);
+    }
+  })
+
+
 
   useEffect(() => {
     //CALL MUTATE FUNC (or get api endpoint) to get a word;
@@ -104,6 +125,8 @@ export default function Home() {
             </Button>
           </div>
         ) : null}
+       {/* this shows a Feedback box, where the texts can be changed */}
+        { wordQuery.isSuccess && <Feedback feedback={feedback} /> }
       </div>
     </div>
   );
