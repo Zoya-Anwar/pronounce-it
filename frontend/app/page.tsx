@@ -8,13 +8,17 @@ export default function Root() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <h1 className="text-2xl font-bold pb-10">apprenons le français</h1>
       <div className="flex h-5 items-center space-x-4 text-sm">
         {show ? (
-          <Button className="font-bold m-2 w-24" onClick={() => setShow(!show)}>
+          <>
+          <div className="row">
+          <h1 className="text-9xl font-bold pb-10">apprenons le français</h1>
+          <Button size="llg" className="font-bold m-2 min-w-[40rem] w-40 text-4xl" onClick={() => setShow(!show)}>
             {" "}
             Start{" "}
           </Button>
+          </div>
+          </>
         ) : null}
         {show ? null : <Levels />}
       </div>

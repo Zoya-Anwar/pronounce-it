@@ -11,36 +11,34 @@ const Levels = () => {
   const { toast } = useToast();
   const levels = ["🥔 Beginner", "🤺 Intermediate", "🏆 Advanced"];
 
-  const levelmap = {
-    "🥔 Beginner": "beginner",
-    "🤺 Intermediate": "intermediate",
-    "🏆 Advanced": "advanced",
-  };
-
-  const form = useForm({
-    resolver: zodResolver(
-      z.object({
-        level: z.string(),
-      })
-    ),
-  });
+  const levelmap = new Map<string, string>([
+    ["🥔 Beginner", "beginner"],
+    ["🤺 Intermediate", "intermediate"],
+    ["🏆 Advanced", "advanced"]
+  ]);
 
   const levelMutation = usePostLevelMutation({
-    onSuccess: () => {
+    onSuccess: (data, variables) => {
+      toast({title: "Selected level", description: "You have selected the level" + variables.level})
       console.log("success");
       router.push("/home");
+    },
+    onError(error, variables, context) {
+      console.log(error);
+      console.log(variables);
+      console.log(context);
     },
   });
 
   // const handleSubmit;
 
   return (
-    <Card className="col space-y-2 ">
-      {levels.map((item) => {
+    <Card className="col min-h-[40vh] justify-center">
+      {levels.map((item: string) => {
         {
           return (
-            <Card className="m-2">
-              <CardContent className="font-bold w-55 text-3xl text-center align-center">
+            <Card key={item} className="m-2" onClick={() => {levelMutation.mutate({level: levelmap.get(item)!});}}>
+              <CardContent className="font-bold w-55 text-3xl text-center p-2">
                 {item}
               </CardContent>
             </Card>
