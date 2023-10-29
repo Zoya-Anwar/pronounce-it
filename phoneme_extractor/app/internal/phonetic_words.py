@@ -4,7 +4,7 @@ import nltk
 
 def get_french_phonetic_words(desired_phoneme: str):
     # Make sure you've downloaded and extracted the Lexique dataset
-    lexique_file = '/home/syazwina/Documents/Code/Hackathons/GUH2023/pronounce-it/phoneme_extractor/Lexique382.tsv'
+    lexique_file = './Lexique382.tsv'
 
     # Read the dataset
     lexique_entries = [line.split("\t") for line in open(lexique_file, "r")]

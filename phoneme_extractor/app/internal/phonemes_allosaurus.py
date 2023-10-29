@@ -1,7 +1,7 @@
 from allosaurus.app import read_recognizer
 
 
-def get_phonemes(filename="output.wav"):
+def get_phonemes(filename="./app/internal/output.wav"):
     # load your model
     model = read_recognizer()
 
