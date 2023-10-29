@@ -15,6 +15,7 @@ import {
 } from "@/hooks/query/use-get-sentence";
 import { useGetAudioQuery, AudioErrorResponseData } from "@/hooks/query/use-audio-query";
 import { useToast } from "@/components/ui/use-toast";
+import Feedback from "@/components/feedback";
 
 export default function Home() {
   const [returnString, setReturnString] = useState<string | null>(null);
@@ -44,20 +45,6 @@ export default function Home() {
   });
 
 
-  const audioErrorQuery = useGetAudioQuery({
-    onSuccess(data: AudioErrorResponseData) {
-      console.log(data);
-      toast({
-        title: "Uh Oh",
-        description: data.result
-
-      });
-
-      setFeedBack(data.result);
-    }
-  })
-
-
 
   useEffect(() => {
     //CALL MUTATE FUNC (or get api endpoint) to get a word;
@@ -85,7 +72,7 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-24">
-                <h1> Hi John! Come practice your pronunciation of French.</h1>
+                <h1> Hi Eva! Come practice your pronunciation of French.</h1>
 
       <Card className="min-w-[40vw] min-h-[20vh] flex justify-center align-middle items-center m-2">
         <CardContent className="font-black text-7xl text-center">
@@ -97,7 +84,7 @@ export default function Home() {
           returnString !== null ? "justify-between" : "justify-center"
         }`}
       >
-        <MicButton returningString={setReturnString} word={testWord} />
+        <MicButton returningString={setReturnString} word={testWord} tip={setFeedBack} />
         <Button
           variant={"link"}
           className="m-2 hover:text-purple-800"
@@ -114,6 +101,7 @@ export default function Home() {
           {returnString}
         </CardContent>
       </Card> */}
+            {/* <Feedback feedback={feedback}/> */}
             <Button
               variant={"link"}
               className="m-2 hover:text-purple-800"
@@ -126,7 +114,6 @@ export default function Home() {
           </div>
         ) : null}
        {/* this shows a Feedback box, where the texts can be changed */}
-        { wordQuery.isSuccess && <Feedback feedback={feedback} /> }
       </div>
     </div>
   );

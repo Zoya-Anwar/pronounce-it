@@ -7,7 +7,7 @@ import {
   const Feedback = (props: any) => {
     return (
       <Alert>
-        <AlertTitle>Uh Oh!</AlertTitle>
+        <AlertTitle>{props.feedback}</AlertTitle>
         <AlertDescription>
           {props.feedback}
         </AlertDescription>

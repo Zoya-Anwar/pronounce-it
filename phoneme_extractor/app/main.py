@@ -5,7 +5,7 @@ import base64
 from app.internal.phonetic_words import get_french_phonetic_words, get_english_phonetic_words
 from app.internal.audio.rate_pronounciation import phoneme_similarity
 
-from app.database.db import get_top_10_lowest_phoneme, get_user_level_value, add_phoneme_test_result_word
+from app.database.db import get_top_10_lowest_phoneme, get_user_level_value, add_phoneme_test_result_word, create_user
 from app.internal.generate_sentences import generate_sentence_french
 import random
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,9 +15,8 @@ import librosa
 import soundfile as sf
 import wave
 
-app = FastAPI()
 
-username="John"
+app = FastAPI()
 
 origins = ["*"]
 
@@ -31,7 +30,7 @@ app.add_middleware(
 
 HEADERS = {"Access-Control-Allow-Origin": "*", "Content-Language": "en-US", "Content-Type": "application/json"}
 
-username = "John"
+username = "Eva"
 
 # Define the API endpoint
 @app.get("/api/find/french_phoneme/{ipa_letter}")
@@ -48,16 +47,29 @@ async def find_english_phoneme(ipa_letter: str, request: Request):
 
 @app.get("/api/get_word")
 async def get_new_word(request: Request):
-    threshold = get_user_level_value(username)
-    worst_phonemes = list(filter(lambda x: x["score"] < threshold, get_top_10_lowest_phoneme(username)))
-    word = get_french_phonetic_words(random.choice(worst_phonemes)['phoneme'])[0]
+    # threshold = get_user_level_value(username)
+    worst_phonemes = list(filter(lambda x: x["score"] < 3, get_top_10_lowest_phoneme(username)))
+    if not worst_phonemes:
+        worst_phonemes = [{'phoneme': 'e'}, {'phoneme': 'l'}, {'phoneme': 'ae'}, {'phoneme': 'm'}]
+        create_user("Sophie", "beginner")
+
+    word = None
+    while not word:
+        word = get_french_phonetic_words(random.choice(worst_phonemes)['phoneme'])[0]
+
+    print(word)
     content = {"word": word}
     return JSONResponse(content=content, headers=HEADERS)
 
 @app.get("/api/get_sentence")
 async def get_new_sentence(request: Request):
-    threshold = get_user_level_value(username)
-    worst_phonemes = list(filter(lambda x: x["score"] < threshold, get_top_10_lowest_phoneme(username)))
+    # threshold = get_user_level_value(username)
+    worst_phonemes = list(filter(lambda x: x["score"] < 3, get_top_10_lowest_phoneme(username)))
+    if not worst_phonemes:
+        worst_phonemes = [{'phoneme': 'e'}, {'phoneme': 'l'}, {'phoneme': 'ae'}, {'phoneme': 'm'}]
+        create_user("Sophie", "beginner")
+
+    
     word = get_french_phonetic_words(random.choice(worst_phonemes)['phoneme'])[0]
     sentence = generate_sentence_french(word)
     content = {"word": sentence}
@@ -87,11 +99,27 @@ async def check_audio(request: Request):
     # Perform test and then save to db
     word = formData["word"]
     scores, result = phoneme_similarity(word, dir_path + "/internal/output2.wav")
-    content = result
+    content = {"result": result, "tip": ""}
     
     # add to database under user John 
 
     add_phoneme_test_result_word(username, word, scores)
+    print(scores)
+    for i in range(len(scores)):
+        current_item = scores[i]
+        phoneme = current_item[0]
+        score = current_item[1]
+        # if score < 2:
+        #     example_word = get_english_phonetic_words(str(phoneme))
+        #     tip = f"""You pronounced this letter completely wrong: {str(word[i])}, here is a word in English with the same phoneme which 
+        #             might help you understand this better {example_word[0]}"""
+            
+        #     content["tip"] = tip
+        #     break
+        content["tip"] = "null"
+
+    
+    print(content)
 
     return JSONResponse(content=content, headers=HEADERS)
 
