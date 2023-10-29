@@ -19,6 +19,8 @@ export default function Home() {
       console.log("success");
       setReturnString(null);
       setTestWord(data.word);
+      this.enabled = false;
+      this.retry = false;
     },
   });
 
