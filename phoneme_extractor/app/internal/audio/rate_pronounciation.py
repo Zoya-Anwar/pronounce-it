@@ -8,8 +8,8 @@ import epitran
 import string
 from ipapy import UNICODE_TO_IPA
 
-input_file = "/home/syazwina/Documents/Code/Hackathons/GUH2023/pronounce-it/phoneme_extractor/app/internal/audio/output.wav"
-target_sentence = "avons"
+input_file = "/Users/zoyaanwar/PycharmProjects/pronounce-it/phoneme_extractor/app/internal/audio/output.wav"
+target_sentence = "je m'apelle un chat"
 
 # only used in which_recognized_words
 target_tokens = word_tokenize(target_sentence.lower())
@@ -126,7 +126,7 @@ def phoneme_similarity(target_sentence):
                 if score >= 3:
                     scores.append((target_phoneme, score))
                     tar_i += 1
-                    gen_i = i
+                    gen_i += 1
                     found = True
                     break  # exit loop
                 i = i + 1
