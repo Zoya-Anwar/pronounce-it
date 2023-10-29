@@ -80,6 +80,8 @@ const MicButton = (props: any) => {
       setAudioChunks([]);
         var data = new FormData();
         data.append('file', audioBlob)
+        data.append('word', props.word)
+
         props.returningString(outputResult);
         // if base64data is not null, then call the mutation
         useAudioMutation.mutate(data);
