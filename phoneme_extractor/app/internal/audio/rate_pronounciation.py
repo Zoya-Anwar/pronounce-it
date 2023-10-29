@@ -7,7 +7,6 @@ from app.internal.audio.phonemes_allosaurus import get_phonemes
 import epitran
 import string
 from ipapy import UNICODE_TO_IPA
-import json
 
 input_file = "/home/syazwina/Documents/Code/Hackathons/GUH2023/pronounce-it/phoneme_extractor/app/internal/audio/output.wav"
 target_sentence = "avons"
@@ -172,19 +171,17 @@ def phoneme_similarity(target_sentence):
 
 
     # String builder
-    result = ""
+    delimeter_result = ""
     for item in data:
         if item["score"] == 0:
-            result += f"[{item['phoneme']}]"
+            delimeter_result += f"[{item['phoneme']}]"
         else:
-            result += item['phoneme']
+            delimeter_result += item['phoneme']
 
-    print("deliniter added:", result)
+    print("delimeter added:", delimeter_result)
+    print("data:", data)
 
-    json_data = json.dumps(data, indent=4)
-    print(json_data)
-
-    return json_data, result
+    return {"data": data, "result": delimeter_result}
 
 
 if __name__ == "__main__":
