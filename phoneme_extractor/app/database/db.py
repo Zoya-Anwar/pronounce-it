@@ -1,5 +1,5 @@
 from pymongo.mongo_client import MongoClient
-from levels_enum import SkillLevel, get_skill_level_value
+from levels_enum import get_skill_level_value
 uri = "mongodb+srv://user:password@cluster0.podbcvn.mongodb.net/?retryWrites=true&w=majority"
 
 # Create a new client and connect to the server
@@ -33,6 +33,10 @@ def get_user_level(username):
         return user["level"]
     else:
         return None
+
+def get_user_level_value(username):
+    level = get_user_level(username)
+    return get_skill_level_value(level)
 
 def len_words_for_phoneme(username, phoneme):
     user = users_collection.find_one({"username": username})
