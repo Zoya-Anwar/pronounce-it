@@ -3,9 +3,11 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 import base64
 
+from fastapi import Request
+from phonemes_allosaurus import get_phonemes
+from starter_words import french_phoneme_practice_different_phonemes, french_words_ipa_increasing_difficulty
 # gives words in "word_to_transcribe", "phonetic_transcription" form
 from phonetic_words import get_french_phonetic_words, get_english_phonetic_words
-from phonemes_allosaurus import get_phonemes
 
 app = Flask(__name__)
 
