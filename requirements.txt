@@ -1,0 +1,6 @@
+nltk~=3.8.1
+SpeechRecognition
+pydub~=0.25.1
+pyaudio~=0.2.13
+requests~=2.31.0
+allosaurus~=1.0.2
