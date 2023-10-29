@@ -26,5 +26,6 @@ const responseSchema = z.object({
       queryFn: getWord,
       onSuccess: (data: ResponseData) => {},
       ...options,
+      staleTime: 1000000000000000,
     });
   };
