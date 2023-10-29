@@ -2,12 +2,18 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from starlette.requests import Request
 import base64
-from app.internal.audio.rate_pronounciation import phoneme_similarity
 from app.internal.phonetic_words import get_french_phonetic_words, get_english_phonetic_words
-from app.database.db import get_top_10_lowest_phoneme, get_user_level_value
+from app.internal.audio.rate_pronounciation import phoneme_similarity
+
+from app.database.db import get_top_10_lowest_phoneme, get_user_level_value, add_phoneme_test_result_word
 from app.internal.generate_sentences import generate_sentence_french
 import random
 from fastapi.middleware.cors import CORSMiddleware
+import os
+import logging
+import librosa
+import soundfile as sf
+import wave
 
 app = FastAPI()
 
@@ -25,7 +31,7 @@ app.add_middleware(
 
 HEADERS = {"Access-Control-Allow-Origin": "*", "Content-Language": "en-US", "Content-Type": "application/json"}
 
-username = "Eva"
+username = "John"
 
 # Define the API endpoint
 @app.get("/api/find/french_phoneme/{ipa_letter}")
@@ -67,13 +73,26 @@ async def set_level(request: Request):
 
 @app.post("/api/audio")
 async def check_audio(request: Request):
-    json = await request.json()
-    b64 = ["audiob64"]
-    wav = base64.decodebytes(b64)
-    with open("./internal/output.wav", "rb") as file:
-        file.write(wav)
+    logging.debug(request)
+    formData = await request.form()
+    wav = formData["file"].file
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+
+    with open(dir_path + "/internal/output.wav", "wb") as aud:
+        aud.write(wav.read())
+
+    x, _ = librosa.load(dir_path + "/internal/output.wav", sr=16000)
+    sf.write(dir_path + "/internal/output2.wav", x, 16000)
+
     # Perform test and then save to db
-    content = {}
+    word = formData["word"]
+    scores, result = phoneme_similarity(word, dir_path + "/internal/output2.wav")
+    content = result
+    
+    # add to database under user John 
+
+    add_phoneme_test_result_word(username, word, scores)
+
     return JSONResponse(content=content, headers=HEADERS)
 
 @app.get("/api/find/similarities/{french_word}")
