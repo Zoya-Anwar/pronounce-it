@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from starlette.requests import Request
 import base64
 from app.internal.phonetic_words import get_french_phonetic_words, get_english_phonetic_words
+from app.internal.audio.rate_pronounciation import phoneme_similarity
 
 app = FastAPI()
 
@@ -35,6 +36,10 @@ def check_audio(request: Request):
         
         return "test", 200
     return {"error": "Something went wrong :("}, 415
+
+@app.get("/api/find/similarities/{french_word}")
+async def phoneme_similarities(french_word: str, request: Request):
+    return phoneme_similarity(french_word), 200
 
 # Run the FastAPI application
 if __name__ == "__main__":
