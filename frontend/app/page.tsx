@@ -3,7 +3,7 @@ import Levels from "@/components/levels";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
-export default function Home() {
+export default function Root() {
   const [show, setShow] = useState(true);
 
   return (
@@ -16,7 +16,7 @@ export default function Home() {
             Start{" "}
           </Button>
         ) : null}
-        {show ? null : <Levels />}{" "}
+        {show ? null : <Levels />}
       </div>
     </main>
   );
