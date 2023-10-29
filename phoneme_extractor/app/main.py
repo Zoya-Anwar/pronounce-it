@@ -58,14 +58,14 @@ async def set_level(request: Request):
 @app.post("/api/audio")
 async def check_audio(request: Request):
     logging.debug(request)
-    wav = request.UploadFile
-
+    formData = await request.form()
+    wav = formData["file"].file
     dir_path = os.path.dirname(os.path.realpath(__file__))
     with open(dir_path + "/internal/output.wav", "wb") as aud:
-        aud.write(wav.content)
+        aud.write(wav.read())
     # Perform test and then save to db
     content = {}
-    return JSONResponse(content=content, headers=HEADERS)
+    return JSONResponse(content={}, headers=HEADERS)
 
 # Run the FastAPI application
 if __name__ == "__main__":
