@@ -1,6 +1,6 @@
 import speech_recognition as sr
 from nltk.tokenize import word_tokenize
-from app.internal.phonemes_allosaurus import get_phonemes
+from app.internal.audio.phonemes_allosaurus import get_phonemes
 import epitran
 import string
 from ipapy import UNICODE_TO_IPA
@@ -80,6 +80,10 @@ def phoneme_similarity(target_sentence="avons", input_file="output.wav"):
 
     phonemes, target_phonemes = get_target_generated_phonemes(target_sentence, input_file)
 
+    s = str(target_sentence.translate(str.maketrans('', '', string.punctuation)).replace(" ", ""))
+    print(s)
+
+
     scores = []
     gen_i = 0
     tar_i = 0
@@ -119,10 +123,11 @@ def phoneme_similarity(target_sentence="avons", input_file="output.wav"):
 
     print()
     for item in scores:
-        print(f"score:{item[1]}       phoneme: {item[0]}")
+        print(f"score:{item[1]}       letter: {item[0]}")
 
     # Convert IPAVowel objects to string before JSON serialization
-    data = [{"score": item[1], "letter": f"{item[0]}"} for item in target_sentence]
+    min(len(s), len(scores))
+    data = [{"score": scores[i][1], "letter": f"{s[i]}"} for i in range(min(len(s), len(scores)))]
 
     # sample json-ified output for:
     # score:4       phoneme: a
@@ -156,14 +161,16 @@ def phoneme_similarity(target_sentence="avons", input_file="output.wav"):
     delimeter_result = ""
     for item in data:
         if item["score"] == 0:
-            delimeter_result += f"[{item['phoneme']}]"
+            delimeter_result += f"[{str(item['letter'])}]"
         else:
-            delimeter_result += item['phoneme']
+            delimeter_result += str(item['letter'])
 
-    print("delimeter added:", delimeter_result)
+    print("letter added:", delimeter_result)
     print("data:", data)
 
-    return scores, {"data": data, "result": delimeter_result}
+    print(data)
+
+    return scores, {"result": delimeter_result}
 
 
 if __name__ == "__main__":
