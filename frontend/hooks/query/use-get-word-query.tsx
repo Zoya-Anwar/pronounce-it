@@ -10,9 +10,9 @@ const responseSchema = z.object({
   
   const getWord = async () => {
     const {
-      data: {word}
+      data
     } = await apiClient.get<ResponseData>("/get_word");
-    return word;
+    return data;
   };
   
   type UseGetWordQueryOptions = Omit<

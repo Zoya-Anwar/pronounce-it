@@ -7,7 +7,7 @@ def get_french_phonetic_words(desired_phoneme: str):
     lexique_file = './Lexique382.tsv'
 
     # Read the dataset
-    lexique_entries = [line.split("\t") for line in open(lexique_file, "r")]
+    lexique_entries = [line.split("\t") for line in open(lexique_file, "r", encoding='utf-8')]
 
     # Create a list to store entries with the desired phoneme
     entries_with_phoneme = []
