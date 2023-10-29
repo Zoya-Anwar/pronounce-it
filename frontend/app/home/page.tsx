@@ -5,20 +5,24 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRightSquare, MoveRight } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useGetWordQuery, ResponseData } from "@/hooks/query/use-get-word-query";
 
 export default function Home() {
   const [returnString, setReturnString] = useState("");
   // const [onLoad, setOnLoad] = useState(true);
   const [testWord, setTestWord] = useState("");
 
-  async function RefreshWithNewCard() {
-    setTestWord("Au Revoir");
-    setReturnString("");
-  }
+  const wordQuery = useGetWordQuery({
+    onSuccess(data: ResponseData) {
+      console.log("success");
+      setReturnString("");
+      setTestWord(data.word);
+    },
+  });
 
   useEffect(() => {
     //CALL MUTATE FUNC (or get api endpoint) to get a word;
-    setTestWord("Bonjour");
+    wordQuery.refetch();
   }, []);
 
   return (
@@ -47,7 +51,7 @@ export default function Home() {
               variant={"link"}
               className="m-2 hover:text-purple-800"
               onClick={async () => {
-                RefreshWithNewCard();
+                wordQuery.refetch();
               }}
             >
               <MoveRight size={48} />
