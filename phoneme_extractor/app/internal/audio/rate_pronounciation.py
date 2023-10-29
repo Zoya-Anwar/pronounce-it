@@ -1,16 +1,19 @@
 import speech_recognition as sr
+import nltk
+from nltk.corpus import cmudict
 from nltk.tokenize import word_tokenize
-from phonemes_allosaurus import get_phonemes
+# from phonemes_allosaurus import get_phonemes
+from app.internal.audio.phonemes_allosaurus import get_phonemes
 import epitran
 import string
 from ipapy import UNICODE_TO_IPA
-
 
 def which_recognized_words(target_sentence="avons", file_name="output.wav"):
     target_tokens = word_tokenize(target_sentence.lower())
 
     # Initialize the recognizer
     recognizer = sr.Recognizer()
+
 
     # Recognize the speech from the provided WAV file
     with sr.AudioFile(file_name) as source:
@@ -43,7 +46,6 @@ def get_phonemes_descriptors(phonemes):
 
     return phoneme_objects
 
-
 def get_target_generated_phonemes(phrase, input_file):
     # get generated phonemes
     generated = get_phonemes(filename=input_file).replace(" ", "")
@@ -55,7 +57,6 @@ def get_target_generated_phonemes(phrase, input_file):
     target_phonemes = get_phonemes_descriptors(target)
 
     return phonemes, target_phonemes
-
 
 def score_phoneme_similarity(p1, p2):
     # consonants it will either be right or wrong
@@ -108,7 +109,7 @@ def phoneme_similarity(target_sentence="avons", input_file="output.wav"):
                 if score >= 3:
                     scores.append((target_phoneme, score))
                     tar_i += 1
-                    gen_i = i
+                    gen_i += 1
                     found = True
                     break  # exit loop
                 i = i + 1
@@ -122,7 +123,7 @@ def phoneme_similarity(target_sentence="avons", input_file="output.wav"):
         print(f"score:{item[1]}       phoneme: {item[0]}")
 
     # Convert IPAVowel objects to string before JSON serialization
-    data = [{"score": item[1], "phoneme": f"{item[0]}"} for item in scores]
+    data = [{"score": item[1], "letter": f"{item[0]}"} for item in target_sentence]
 
     # sample json-ified output for:
     # score:4       phoneme: a
@@ -163,9 +164,9 @@ def phoneme_similarity(target_sentence="avons", input_file="output.wav"):
     print("delimeter added:", delimeter_result)
     print("data:", data)
 
-    return {"data": data, "result": delimeter_result}
+    return scores, {"data": data, "result": delimeter_result}
 
 
 if __name__ == "__main__":
-    phoneme_similarity()
-# which_recognized_words()
+    phoneme_similarity(target_sentence)
+# which_recognized_words(target_tokens)
