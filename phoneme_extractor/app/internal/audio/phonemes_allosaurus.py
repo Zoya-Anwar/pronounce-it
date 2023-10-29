@@ -1,14 +1,14 @@
 from allosaurus.app import read_recognizer
 
 
-def get_phonemes(filename="./app/internal/output.wav"):
+def get_phonemes(filename="./output.wav"):
     # load your model
     model = read_recognizer()
 
     # run inference -> æ l u s ɔ ɹ s
     inferences = model.recognize(filename, "fra")
 
-    print(inferences)
+    print("phonemes of audio recording:", inferences, "\n")
 
     return inferences
 
