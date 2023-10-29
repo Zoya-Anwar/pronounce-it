@@ -17,8 +17,16 @@ async def find_english_phoneme(ipa_letter: str, request: Request):
     english_word, english_phonetic_transcription = get_english_phonetic_words(ipa_letter)
     return {"english_word": english_word, "english_phonetic_transcription": english_phonetic_transcription}, 200
 
+@app.get("/api/find/new_word")
+async def get_new_word():
+    #Get new word for user with a bad phoneme
+    # Get bad phonemes, then get new word from randomly selected bad phoneme
+    # return word
+    return 200
+
+
 @app.post("/api/level")
-def set_level(request: Request):
+async def set_level(request: Request):
     if request.is_json:
         level = request.json["level"]
         # set_level if time
@@ -26,7 +34,7 @@ def set_level(request: Request):
     return {"error": "Request must be JSON"}, 415
 
 @app.post("/api/submit_audio")
-def check_audio(request: Request):
+async def check_audio(request: Request):
     if request.is_json:
         b64 = request.json["audiob64"]
         wav = base64.decodebytes(b64)
