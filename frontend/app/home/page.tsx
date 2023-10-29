@@ -17,10 +17,9 @@ export default function Home() {
   const wordQuery = useGetWordQuery({
     onSuccess(data: ResponseData) {
       console.log("success");
+      console.log(data);
       setReturnString(null);
       setTestWord(data.word);
-      this.enabled = false;
-      this.retry = false;
     },
   });
 
