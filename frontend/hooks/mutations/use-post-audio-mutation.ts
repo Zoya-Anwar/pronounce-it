@@ -1,6 +1,27 @@
-import { apiClient } from "@/lib/interceptor";
 import { useMutation, UseMutationOptions } from "react-query";
 import z from "zod";
+
+import axios, { type AxiosError } from "axios";
+
+export const apiClient = axios.create({
+  baseURL: "http://localhost:8000/api", // placeholder for backend url
+  headers: {
+    "Content-Type": "multipart/form-data",
+  },
+});
+
+// Add a response interceptor
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error: AxiosError) => {
+    // if error, return error message and status code
+    if (error.response) {
+      return Promise.reject(error.response.data);
+    }
+    return Promise.reject(error);
+  }
+);
+
 
 const phonemesSchema = z.object({
   phoneme: z.string(),
@@ -16,19 +37,15 @@ const responseSchema = z.object({
 
 export type AudioResponseData = z.infer<typeof responseSchema>;
 
-const requestSchema = z.object({
-  audio: z.string(),
-});
 
-export type AudioRequestData = z.infer<typeof requestSchema>;
 
-const postAudio = async (audio: AudioRequestData) => {
+const postAudio = async (audio: any) => {
   const { data } = await apiClient.post<AudioResponseData>("/audio", audio);
   return data;
 };
 
 type UsePostAudioMutationOptions = Omit<
-  UseMutationOptions<AudioResponseData, unknown, AudioRequestData, unknown>,
+  UseMutationOptions<AudioResponseData, unknown, unknown, unknown>,
   "mutationFn"
 >;
 

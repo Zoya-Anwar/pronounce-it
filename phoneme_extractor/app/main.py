@@ -6,6 +6,8 @@ from app.internal.phonetic_words import get_french_phonetic_words, get_english_p
 from app.database.db import get_top_10_lowest_phoneme, get_user_level_value
 import random
 from fastapi.middleware.cors import CORSMiddleware
+import os 
+import logging
 
 app = FastAPI()
 
@@ -55,11 +57,12 @@ async def set_level(request: Request):
 
 @app.post("/api/audio")
 async def check_audio(request: Request):
-    json = await request.json()
-    b64 = ["audiob64"]
-    wav = base64.decodebytes(b64)
-    with open("./internal/output.wav", "rb") as file:
-        file.write(wav)
+    logging.debug(request)
+    wav = request.UploadFile
+
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    with open(dir_path + "/internal/output.wav", "wb") as aud:
+        aud.write(wav.content)
     # Perform test and then save to db
     content = {}
     return JSONResponse(content=content, headers=HEADERS)

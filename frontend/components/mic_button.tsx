@@ -83,13 +83,15 @@ const MicButton = (props: any) => {
       var reader = new FileReader();
       reader.readAsDataURL(audioBlob);
       reader.onloadend = function () {
+        var data = new FormData();
+        data.append('file', audioUrl)
         var base64data = reader.result;
         console.log(base64data);
         props.returningString(outputResult);
 
         // if base64data is not null, then call the mutation
         if (base64data) {
-          useAudioMutation.mutate({ audio: base64data.toString() });
+          useAudioMutation.mutate({ audio: audioBlob });
         }
       };
     };
