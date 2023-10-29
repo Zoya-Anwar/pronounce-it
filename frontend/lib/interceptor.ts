@@ -2,7 +2,6 @@ import axios, { type AxiosError } from "axios";
 
 export const apiClient = axios.create({
   baseURL: "http://localhost:8000/api", // placeholder for backend url
-  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },

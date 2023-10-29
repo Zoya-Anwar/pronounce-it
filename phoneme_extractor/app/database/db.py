@@ -1,5 +1,5 @@
 from pymongo.mongo_client import MongoClient
-from levels_enum import get_skill_level_value
+from app.database.levels_enum import get_skill_level_value
 uri = "mongodb+srv://user:password@cluster0.podbcvn.mongodb.net/?retryWrites=true&w=majority"
 
 # Create a new client and connect to the server
