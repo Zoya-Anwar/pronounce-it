@@ -2,17 +2,20 @@ import speech_recognition as sr
 import nltk
 from nltk.corpus import cmudict
 from nltk.tokenize import word_tokenize
-from phonemes_allosaurus import get_phonemes
+from app.internal.audio.phonemes_allosaurus import get_phonemes
 import epitran
 import string
 from ipapy import UNICODE_TO_IPA
+import json
 
-input_file = "output.wav"
+input_file = "/home/syazwina/Documents/Code/Hackathons/GUH2023/pronounce-it/phoneme_extractor/app/internal/audio/output.wav"
 target_sentence = "avons"
+
+# only used in which_recognized_words
 target_tokens = word_tokenize(target_sentence.lower())
 
-
-def which_recognized_words():
+# not using, so far
+def which_recognized_words(target_tokens):
     # Initialize the recognizer
     recognizer = sr.Recognizer()
 
@@ -47,7 +50,7 @@ def which_recognized_words():
 
     return valid
 
-
+# need this
 def get_phonemes_descriptors(phonemes):
     phoneme_objects = []
     for p in phonemes:
@@ -55,22 +58,24 @@ def get_phonemes_descriptors(phonemes):
 
     return phoneme_objects
 
-def get_target_generated_phonemes():
+# need this
+def get_target_generated_phonemes(target_sentence):
+    print("\nword:", target_sentence)
     # get generated phonemes
     generated = get_phonemes(filename=input_file).replace(" ", "")
     phonemes = get_phonemes_descriptors(generated)
-    print(generated)
-    print(len(phonemes))
+    print("length:", len(phonemes), "    phonemes:", generated)
 
     # get target phonemes
     epi = epitran.Epitran('fra-Latn-p')
     target = epi.transliterate(target_sentence.translate(str.maketrans('', '', string.punctuation)).replace(" ", ""))
     target_phonemes = get_phonemes_descriptors(target)
-    print(target)
-    print(len(target_phonemes))
+    print("length:", len(target_phonemes), "    phonemes:", target)
+
 
     return phonemes, target_phonemes
 
+# need this
 def score_phoneme_similarity(p1, p2):
     # consonants it will either be right or wrong
     # vowels can vary and merge into each other more
@@ -89,8 +94,9 @@ def score_phoneme_similarity(p1, p2):
 
     return score
 
-def phoneme_similarity():
-    phonemes, target_phonemes = get_target_generated_phonemes()
+# need this
+def phoneme_similarity(target_sentence):
+    phonemes, target_phonemes = get_target_generated_phonemes(target_sentence)
 
     scores = []
     gen_i = 0
@@ -129,10 +135,45 @@ def phoneme_similarity():
                 scores.append((target_phonemes[tar_i], original_score))
                 tar_i += 1
 
-    print(scores)
-    return scores
+    print()
+    for item in scores:
+        print(f"score:{item[1]}       phoneme: {item[0]}")
+
+    # Convert IPAVowel objects to string before JSON serialization
+    data = [{"score": item[1], "phoneme": f"{item[0]}"} for item in scores]
+    # sample json-ified output for:
+    # score:4       phoneme: a
+    # score:1       phoneme: v
+    # score:4       phoneme: ɔ
+    # score:1       phoneme: ̃
+    #
+    # [
+    #     {
+    #         "score": 4,
+    #         "phoneme": "a"
+    #     },
+    #     {
+    #         "score": 1,
+    #         "phoneme": "v"
+    #     },
+    #     {
+    #         "score": 4,
+    #         "phoneme": "\u0254"
+    #     },
+    #     {
+    #         "score": 1,
+    #         "phoneme": "\u0303"
+    #     }
+    # ]
+    #
+    # will need to re convert the unicode characters to IPA characters in front end
+
+    json_data = json.dumps(data, indent=4)
+    print(json_data)
+
+    return json_data
 
 
 if __name__ == "__main__":
-    phoneme_similarity()
-# which_recognized_words()
+    phoneme_similarity(target_sentence)
+# which_recognized_words(target_tokens)
