@@ -14,11 +14,17 @@ import {
   ResponseDataSentence,
 } from "@/hooks/query/use-get-sentence";
 
+import { useGetAudioQuery, AudioErrorResponseData } from "@/hooks/query/use-audio-query";
+import { useToast } from "@/components/ui/use-toast";
+
 export default function Home() {
   const [returnString, setReturnString] = useState<string | null>(null);
   const [testWord, setTestWord] = useState("");
   const [firstWord, setFirstWord] = useState(true);
   const [displayWords, setDisplayWords] = useState(true); // Initial display state
+  const [feedback, setFeedBack] = useState("");
+
+  const { toast } = useToast();
 
   const wordQuery = useGetWordQuery({
     onSuccess(data: ResponseData) {
@@ -37,6 +43,19 @@ export default function Home() {
       setTestWord(data.word);
     },
   });
+
+  const audioErrorQuery = useGetAudioQuery({
+    onSuccess(data: AudioErrorResponseData) {
+      console.log(data);
+      toast({
+        title: "Uh Oh",
+        description: data.result
+
+      });
+
+      setFeedBack(data.result);
+    }
+  })
 
   useEffect(() => {
     //CALL MUTATE FUNC (or get api endpoint) to get a word;
@@ -64,7 +83,7 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-24">
-                <h1> Hi John! Come practice your pronunciation of French.</h1>
+<h1> Hi John! Come practice your pronunciation of French.</h1>
 
       <Card className="min-w-[40vw] min-h-[20vh] flex justify-center align-middle items-center m-2">
         <CardContent className="font-black text-7xl text-center">
@@ -77,7 +96,7 @@ export default function Home() {
         }`}
       >
         <MicButton returningString={setReturnString} word={testWord} />
-        <Button
+<Button
           variant={"link"}
           className="m-2 hover:text-purple-800"
           onClick={async () => {
@@ -88,7 +107,7 @@ export default function Home() {
         {returnString!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !==
         null ? (
           <div>
-            {/* <Card className="min-w-[40vw] min-h-[20vh] flex justify-center align-middle items-center m-2">
+{/* <Card className="min-w-[40vw] min-h-[20vh] flex justify-center align-middle items-center m-2">
         <CardContent className="font-black text-7xl text-center">
           {returnString}
         </CardContent>
@@ -104,6 +123,8 @@ export default function Home() {
             </Button>
           </div>
         ) : null}
+        {/* this shows a Feedback box, where the texts can be changed */}
+        {/* { wordQuery.isSuccess && <Feedback feedback={feedback} /> } */}
       </div>
     </div>
   );
