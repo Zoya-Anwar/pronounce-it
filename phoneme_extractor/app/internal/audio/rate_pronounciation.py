@@ -140,7 +140,7 @@ def phoneme_similarity(target_sentence):
         print(f"score:{item[1]}       phoneme: {item[0]}")
 
     # Convert IPAVowel objects to string before JSON serialization
-    data = [{"score": item[1], "phoneme": f"{item[0]}"} for item in scores]
+    data = [{"score": item[1], "letter": f"{item[0]}"} for item in target_sentence]
 
     # sample json-ified output for:
     # score:4       phoneme: a
@@ -181,7 +181,7 @@ def phoneme_similarity(target_sentence):
     print("delimeter added:", delimeter_result)
     print("data:", data)
 
-    return {"data": data, "result": delimeter_result}
+    return scores, {"data": data, "result": delimeter_result}
 
 
 if __name__ == "__main__":

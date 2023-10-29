@@ -64,6 +64,8 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-24">
+                <h1> Hi John! Come practice your pronunciation of French.</h1>
+
       <Card className="min-w-[40vw] min-h-[20vh] flex justify-center align-middle items-center m-2">
         <CardContent className="font-black text-7xl text-center">
           {returnString !== null ? returnString : testWord}
