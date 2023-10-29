@@ -26,11 +26,11 @@ aiplatform.init(
 # Construct the full path to the key file
 from vertexai.preview.language_models import TextGenerationModel
 
-def generate_sentence_french(temperature: float = .2, word="travaille"):
+def generate_sentence_french(word="travaille"):
     """Ideation example with a Large Language Model"""
 
     parameters = {
-        "temperature": temperature,
+        "temperature": 0.2,
         "max_output_tokens": 256,
         "top_p": .8,
         "top_k": 40,
