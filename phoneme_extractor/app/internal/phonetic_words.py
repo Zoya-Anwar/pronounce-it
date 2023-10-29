@@ -2,9 +2,9 @@ import random
 import nltk
 
 
-def get_french_phonetic_words(desired_phoneme="a"):
+def get_french_phonetic_words(desired_phoneme: str):
     # Make sure you've downloaded and extracted the Lexique dataset
-    lexique_file = '/Users/zoyaanwar/PycharmProjects/pronounce-it/phoneme_extractor/Lexique382.tsv'
+    lexique_file = '/home/syazwina/Documents/Code/Hackathons/GUH2023/pronounce-it/phoneme_extractor/Lexique382.tsv'
 
     # Read the dataset
     lexique_entries = [line.split("\t") for line in open(lexique_file, "r")]
@@ -32,9 +32,9 @@ def get_french_phonetic_words(desired_phoneme="a"):
         return random_entry
 
 
-def get_english_phonetic_words(desired_phoneme="e"):
+def get_english_phonetic_words(desired_phoneme: str):
     # Define the path to your custom pronunciation dictionary file
-    custom_dict_file = "/Users/zoyaanwar/PycharmProjects/pronounce-it/phoneme_extractor/CMU.in.IPA.txt"
+    custom_dict_file = "./CMU.in.IPA.txt"
 
     # Create a dictionary to store word-to-IPA mapping
     custom_ipa_dict = {}

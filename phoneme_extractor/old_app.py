@@ -7,7 +7,7 @@ from fastapi import Request
 from phonemes_allosaurus import get_phonemes
 from starter_words import french_phoneme_practice_different_phonemes, french_words_ipa_increasing_difficulty
 # gives words in "word_to_transcribe", "phonetic_transcription" form
-from phonetic_words import get_french_phonetic_words, get_english_phonetic_words
+# from phonetic_words import get_french_phonetic_words, get_english_phonetic_words
 
 app = Flask(__name__)
 
@@ -34,12 +34,12 @@ def find_english_phoneme(ipa_letter: str, request: Request):
         return english_word, 200
     return {"error": "Request must be JSON"}, 415
 
+# Define the API endpoint
 @app.get("/api/find/french_phoneme/{ipa_letter}")
-def find_french_phoneme(ipa_letter: str, request: Request):
-    if request.is_json:
-        french_word, french_phonetic_transcription = get_french_phonetic_words(ipa_letter)
-        return french_word, 200
-    return {"error": "Request must be JSON"}, 415
+async def find_french_phoneme(ipa_letter: str, request: Request):
+    french_word, french_phonetic_transcription = get_french_phonetic_words(ipa_letter)
+    print("/api/find/french_phoneme/", ipa_letter)
+    return {"french_word": french_word, "french_phonetic_transcription": french_phonetic_transcription}
 
 @app.post("/api/level")
 def set_level(request: Request):
