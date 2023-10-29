@@ -13,6 +13,7 @@ import {
 export default function Home() {
   const [returnString, setReturnString] = useState<JSX.Element | null>(null);
   const [testWord, setTestWord] = useState("");
+  const [firstWord, setFirstWord] = useState(true);
 
   const wordQuery = useGetWordQuery({
     onSuccess(data: ResponseData) {
@@ -25,8 +26,12 @@ export default function Home() {
 
   useEffect(() => {
     //CALL MUTATE FUNC (or get api endpoint) to get a word;
-    wordQuery.refetch();
-  }, [wordQuery]);
+    if (firstWord){
+      wordQuery.refetch();
+      console.log("shmoovin");
+      setFirstWord(false);
+    }
+  }, []);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-24">
@@ -41,7 +46,7 @@ export default function Home() {
         }`}
       >
         <MicButton returningString={setReturnString} word={testWord} />
-        {returnString!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !==
+        {returnString!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !==
         null ? (
           <div>
             <Button
