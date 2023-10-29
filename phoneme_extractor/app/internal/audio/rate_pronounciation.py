@@ -2,6 +2,7 @@ import speech_recognition as sr
 import nltk
 from nltk.corpus import cmudict
 from nltk.tokenize import word_tokenize
+# from phonemes_allosaurus import get_phonemes
 from app.internal.audio.phonemes_allosaurus import get_phonemes
 import epitran
 import string
@@ -141,6 +142,7 @@ def phoneme_similarity(target_sentence):
 
     # Convert IPAVowel objects to string before JSON serialization
     data = [{"score": item[1], "phoneme": f"{item[0]}"} for item in scores]
+
     # sample json-ified output for:
     # score:4       phoneme: a
     # score:1       phoneme: v
@@ -168,10 +170,21 @@ def phoneme_similarity(target_sentence):
     #
     # will need to re convert the unicode characters to IPA characters in front end
 
+
+    # String builder
+    result = ""
+    for item in data:
+        if item["score"] == 0:
+            result += f"[{item['phoneme']}]"
+        else:
+            result += item['phoneme']
+
+    print("deliniter added:", result)
+
     json_data = json.dumps(data, indent=4)
     print(json_data)
 
-    return json_data
+    return json_data, result
 
 
 if __name__ == "__main__":
