@@ -1,4 +1,4 @@
-import { PauseCircle, PlayCircle } from "lucide-react";
+import { Pause, Play } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState, useRef } from "react";
 // import mutation post
@@ -65,8 +65,10 @@ const MicButton = (props: any) => {
           doStuff();
         }}
         size={"icon"}
+        variant={"link"}
+        className="rounded-full h-16 w-16 hover:text-purple-800"
       >
-        {usingMic ? <PauseCircle /> : <PlayCircle />}
+        {usingMic ? <Pause size={36} /> : <Play size={36} />}
       </Button>
       {audio ? <audio src={audio}></audio> : null}
     </>
