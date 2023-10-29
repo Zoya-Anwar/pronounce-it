@@ -1,6 +1,5 @@
 from pymongo.mongo_client import MongoClient
-from levels_enum import get_skill_level_value
-from database_helper import get_target_phonemes
+from app.database.levels_enum import get_skill_level_value
 uri = "mongodb+srv://ddos:Xa8HEaFGXvn62DhT@cluster0.podbcvn.mongodb.net/?retryWrites=true&w=majority"
 
 # Create a new client and connect to the server
@@ -128,9 +127,8 @@ def add_phoneme_test_result(username, phoneme, score, word):
     else:
         print(f"User '{username}' not found.")
 
-def add_phoneme_test_result_word(username, word, score):
-
-    for phoneme in get_target_phonemes(word):
+def add_phoneme_test_result_word(username, word, scores):
+    for phoneme, score in scores:
         add_phoneme_test_result(username, phoneme.__unicode__(), score, word)
 
 
@@ -140,4 +138,4 @@ if __name__ == "__main__":
     phoneme = "h"  # Replace with the desired phoneme
     level = "begInner"
     score = 1  # Replace with the desired score
-    print(add_phoneme_test_result_word(username, "regarder", 4))
+    print(add_phoneme_test_result_word(username, "interessant", 0))
