@@ -24,15 +24,14 @@ apiClient.interceptors.response.use(
 
 
 const phonemesSchema = z.object({
-  phoneme: z.string(),
-  score: z.number(),
+  result: z.string(),
+  tip: z.string(),
 });
 
 export type PhonemesData = z.infer<typeof phonemesSchema>;
 
 const responseSchema = z.object({
-  data: z.array(phonemesSchema),
-  result: z.string(),
+  result: phonemesSchema,
 });
 
 export type AudioResponseData = z.infer<typeof responseSchema>;

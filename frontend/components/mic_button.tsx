@@ -16,7 +16,7 @@ const MicButton = (props: any) => {
       // check the result in data, if it has delimiters [], then color the words between the delimiters red and the rest black
 
       // use regex to find the delimiters and then split the string into an array of strings
-      const array = data.result.split(/(\[.*?\])/g);
+      const array = data.result.result.split(/(\[.*?\])/g);
 
       console.log(array);
 
@@ -38,6 +38,7 @@ const MicButton = (props: any) => {
 
       console.log(result);
       props.returningString(result);
+      props.tip(data.result.tip);
 
     },
     onError(error) {
