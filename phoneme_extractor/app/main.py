@@ -11,6 +11,9 @@ import random
 from fastapi.middleware.cors import CORSMiddleware
 import os
 import logging
+import librosa
+import soundfile as sf
+import wave
 
 app = FastAPI()
 
@@ -78,12 +81,19 @@ async def check_audio(request: Request):
     with open(dir_path + "/internal/output.wav", "wb") as aud:
         aud.write(wav.read())
 
+    x, _ = librosa.load(dir_path + "/internal/output.wav", sr=16000)
+    sf.write(dir_path + "/internal/output2.wav", x, 16000)
+
     # Perform test and then save to db
     word = formData["word"]
-    result = phoneme_similarity(word, 'output.wav')
+    result = phoneme_similarity(word, dir_path + "/internal/output2.wav")
+    content = result
+    
+    # add to database under user John 
 
-    content = {"word": word,
-               "result": result}
+
+    print(content)
+
 
     return JSONResponse(content=content, headers=HEADERS)
 

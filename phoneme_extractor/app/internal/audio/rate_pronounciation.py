@@ -1,19 +1,16 @@
 import speech_recognition as sr
-import nltk
-from nltk.corpus import cmudict
 from nltk.tokenize import word_tokenize
-# from phonemes_allosaurus import get_phonemes
-from app.internal.audio.phonemes_allosaurus import get_phonemes
+from app.internal.phonemes_allosaurus import get_phonemes
 import epitran
 import string
 from ipapy import UNICODE_TO_IPA
+
 
 def which_recognized_words(target_sentence="avons", file_name="output.wav"):
     target_tokens = word_tokenize(target_sentence.lower())
 
     # Initialize the recognizer
     recognizer = sr.Recognizer()
-
 
     # Recognize the speech from the provided WAV file
     with sr.AudioFile(file_name) as source:
@@ -46,6 +43,7 @@ def get_phonemes_descriptors(phonemes):
 
     return phoneme_objects
 
+
 def get_target_generated_phonemes(phrase, input_file):
     # get generated phonemes
     generated = get_phonemes(filename=input_file).replace(" ", "")
@@ -57,6 +55,7 @@ def get_target_generated_phonemes(phrase, input_file):
     target_phonemes = get_phonemes_descriptors(target)
 
     return phonemes, target_phonemes
+
 
 def score_phoneme_similarity(p1, p2):
     # consonants it will either be right or wrong
@@ -168,5 +167,5 @@ def phoneme_similarity(target_sentence="avons", input_file="output.wav"):
 
 
 if __name__ == "__main__":
-    phoneme_similarity(target_sentence)
+    phoneme_similarity("bonjour")
 # which_recognized_words(target_tokens)
