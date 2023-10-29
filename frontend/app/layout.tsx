@@ -6,7 +6,7 @@ import QueryProvider from "@/components/providers/queryclientprovider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Bilingual",
+  title: "Pronounce It",
   description: "Duolingo clone",
 };
 
