@@ -1,6 +1,6 @@
 import speech_recognition as sr
 from nltk.tokenize import word_tokenize
-from phonemes_allosaurus import get_phonemes
+from app.internal.phonemes_allosaurus import get_phonemes
 import epitran
 import string
 from ipapy import UNICODE_TO_IPA
