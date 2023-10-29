@@ -1,5 +1,5 @@
 "use client";
-import Levels  from "@/components/levels";
+import Levels from "@/components/levels";
 import MicButton from "@/components/mic_button";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 
 export default function Home() {
   const [returnString, setReturnString] = useState("");
-  const [onLoad, setOnLoad] = useState(true);
+  // const [onLoad, setOnLoad] = useState(true);
   const [testWord, setTestWord] = useState("");
 
   async function RefreshWithNewCard() {
@@ -21,22 +21,24 @@ export default function Home() {
   }, []);
 
   return (
-    <div>
-        <Card>
-            {testWord}
-        </Card>
-        <MicButton returningString={setReturnString} word={testWord} />
-        {returnString !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!== "" ? 
-        (<div>
-        
-        <Card>
-            {returnString}
-        </Card>
-        <Button onClick={async () => {RefreshWithNewCard();}}>
+    <div className="min-h-screen">
+      <Card>
+        <CardContent>{testWord}</CardContent>
+      </Card>
+      <MicButton returningString={setReturnString} word={testWord} />
+      {returnString!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !==
+      "" ? (
+        <div>
+          <Card>{returnString}</Card>
+          <Button
+            onClick={async () => {
+              RefreshWithNewCard();
+            }}
+          >
             Next
-        </Button>
+          </Button>
         </div>
-        ) : null}
+      ) : null}
     </div>
   );
 }
