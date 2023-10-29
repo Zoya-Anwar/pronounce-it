@@ -30,7 +30,9 @@ def check_audio(request: Request):
     if request.is_json:
         b64 = request.json["audiob64"]
         wav = base64.decodebytes(b64)
-        # submit wav file for checking
+        with open("./internal/output.wav", "rb") as file:
+            file.write(wav)
+        
         return "test", 200
     return {"error": "Something went wrong :("}, 415
 
