@@ -34,14 +34,17 @@ def get_user_level(username):
     else:
         return "beginner"
 
+
 def get_user_level_value(username):
     level = get_user_level(username)
     return get_skill_level_value(level)
 
+
 def len_words_for_phoneme(username, phoneme):
     user = users_collection.find_one({"username": username})
     if user:
-        phoneme_data = next((p for p in user["phonemes"] if p["phoneme"] == phoneme), None)
+        phoneme_data = next(
+            (p for p in user["phonemes"] if p["phoneme"] == phoneme), None)
         if phoneme_data:
             return len(phoneme_data["right_words"]) + len(phoneme_data["wrong_words"])
         else:
@@ -63,7 +66,8 @@ def get_top_10_lowest_phoneme(username):
             phoneme = phoneme_data["phoneme"]
             wrong_words = phoneme_data["wrong_words"]
             score = phoneme_data["score"]
-            result.append({"phoneme": phoneme, "score": score, "wrong_words": wrong_words})
+            result.append({"phoneme": phoneme, "score": score,
+                          "wrong_words": wrong_words})
         return result
     else:
         return None
@@ -72,7 +76,8 @@ def get_top_10_lowest_phoneme(username):
 def get_average_score_for_phoneme_user(username, phoneme):
     user = users_collection.find_one({"username": username})
     if user:
-        phoneme_data = next((p for p in user["phonemes"] if p["phoneme"] == phoneme), None)
+        phoneme_data = next(
+            (p for p in user["phonemes"] if p["phoneme"] == phoneme), None)
         if phoneme_data:
             return phoneme_data["score"]
         else:
@@ -88,7 +93,8 @@ def get_average_score_for_phoneme_across_users(phoneme):
 
     # Iterate through all users
     for user in users_collection.find():
-        phoneme_data = next((p for p in user["phonemes"] if p["phoneme"] == phoneme), None)
+        phoneme_data = next(
+            (p for p in user["phonemes"] if p["phoneme"] == phoneme), None)
         if phoneme_data:
             total_score += phoneme_data["score"]
             total_users += 1
@@ -106,10 +112,12 @@ def add_phoneme_test_result(username, phoneme, score, word):
     is_correct = score >= get_skill_level_value(get_user_level(username))
     if user:
         # Check if the phoneme already exists for the user
-        phoneme_data = next((p for p in user["phonemes"] if p["phoneme"] == phoneme), None)
+        phoneme_data = next(
+            (p for p in user["phonemes"] if p["phoneme"] == phoneme), None)
         if phoneme_data:
             words_size = len_words_for_phoneme(username, phoneme)
-            phoneme_data["score"] = (phoneme_data["score"] * words_size + score) / (words_size + 1)
+            phoneme_data["score"] = (
+                phoneme_data["score"] * words_size + score) / (words_size + 1)
             if score == is_correct:
                 phoneme_data["right_words"].append(word)
             else:
@@ -122,15 +130,16 @@ def add_phoneme_test_result(username, phoneme, score, word):
                 "wrong_words": [word] if not is_correct else [],
             }
             user["phonemes"].append(new_phoneme)
-        users_collection.update_one({"_id": user["_id"]}, {"$set": {"phonemes": user["phonemes"]}})
+        users_collection.update_one({"_id": user["_id"]}, {
+                                    "$set": {"phonemes": user["phonemes"]}})
         print(f"Phoneme test result added for user '{username}'.")
     else:
         print(f"User '{username}' not found.")
 
+
 def add_phoneme_test_result_word(username, word, scores):
     for phoneme, score in scores:
         add_phoneme_test_result(username, phoneme.__unicode__(), score, word)
-
 
 
 if __name__ == "__main__":
